@@ -1,0 +1,25 @@
+@startuml
+skinparam componentStyle rectangle
+
+[<&browser> TickGenerator] as gen
+[<&random> tick-event] as x0 #lightgreen
+
+together {
+    [<&random> tick-handler] as x1 #lightgreen
+    [<&list> tick-handler] as q1 #lightblue
+    [<&browser> TickHandler] as c1
+}
+
+[<&random> tick-handler_error] as x3 #lightgreen
+[<&list> tick-handler_error] as q3 #lightblue
+
+gen -> x0
+
+x0 --> x1
+x1 -> q1
+q1 -> c1
+
+c1 --> x3
+x3 -> q3
+
+@enduml

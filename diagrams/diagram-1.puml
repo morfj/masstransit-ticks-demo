@@ -1,0 +1,9 @@
+@startuml
+skinparam componentStyle rectangle
+
+[<&browser> TickGenerator] as gen
+[<&random> tick-event] as x0 #lightgreen
+
+gen -> x0
+
+@enduml
