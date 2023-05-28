@@ -186,7 +186,10 @@ This will just make it randomly throw an exception which will make MassTransit
 reject the message and move it to an error queue. Messages in the error queue
 can be inspected and analysed by the developer and they contain a lot of
 information, including the callstack for the exception that was thrown and the
-original event.
+original event. You can also configure the consumer to retry the message a
+number of times before the exception is thrown further and generates an error.
+This is done with the `UseMessageRetry()` for either endpoint or consumer
+configurations.
 
 ![error](DOCS/screenshots/error.png)
 
@@ -257,7 +260,7 @@ each consumer. A consumer definition is a class that inherits from
 the `ConsumerDefinition<>` base class.
 
 First, register the consumer and definition you can use one of the many
-overloads for automatic discovery of consumers and consumer definitions 
+overloads for automatic discovery of consumers and consumer definitions
 (see `AddConsumers()`) or use the explicit methods like:
 
 ```csharp
