@@ -17,7 +17,8 @@ namespace TickCounter
                 {
                     services.AddMassTransit(busCfg =>
                     {
-                        busCfg.UsingRabbitMq((_, cfg) =>
+                        busCfg.AddConsumer(typeof(TickConsumer), typeof(TickConsumerDefinition));
+                        busCfg.UsingRabbitMq((context, cfg) =>
                         {
                             cfg.Host("localhost", "/", h =>
                             {
@@ -25,16 +26,7 @@ namespace TickCounter
                                 h.Password("guest");
                             });
 
-                            cfg.ReceiveEndpoint("tick-counter", re =>
-                            {
-                                re.ConfigureConsumeTopology = false;
-                                re.SetQueueArgument("declare", "lazy");
-                                re.Consumer<TickConsumer>(configurator => configurator.UseConcurrentMessageLimit(1));
-                                re.Bind("tick-event", e =>
-                                {
-                                    e.ExchangeType = "fanout";
-                                });
-                            });
+                            cfg.ConfigureEndpoints(context);
                         });
                     });
                 });

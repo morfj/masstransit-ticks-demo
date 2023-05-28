@@ -247,3 +247,24 @@ So in summary, the `_error` queue will contain messages that were of the
 expected type, but for some reason threw an exception while being processed.
 The `_skipped` queue on the ther hand contains messages that does not match the
 message definition in the consumer.
+
+## Part 3 - Alternative implementation
+
+So far the setup of a consumer has mostly been done in the `program.cs` file
+where we set up the binding and any other consumer/endpoint settings.
+A more object oriented approach is to instead create a *consumer definition* for
+each consumer. A consumer definition is a class that inherits from
+the `ConsumerDefinition<>` base class.
+
+First, register the consumer and definition you can use one of the many
+overloads for automatic discovery of consumers and consumer definitions 
+(see `AddConsumers()`) or use the explicit methods like:
+
+```csharp
+busCfg.AddConsumer(typeof(TickConsumer), typeof(TickConsumerDefinition));` 
+```
+
+Second, set up the enpoints and topologies for all the registered consumers,
+call `cfg.ConfigureEndpoints(context);` in the RabbitMQ configuration.
+
+The project `TickCounter` is implemented using this approach.
